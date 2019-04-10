@@ -219,6 +219,69 @@ background: linear-gradient(65deg, #3D9970, #FFDC00); /* Standard syntax */
  .table100 .ps__rail-y .ps__thumb-y::before {
    background-color: #cccccc;
  }
- 
+ .table-page{
+    float: right;
+    padding-right: 15px;
+    padding-bottom: 15px;
+ }
 
-/*Others*/
+ .table-page ul{
+   width: 100px;
+ }
+ .table-page ul li{
+   list-style-type: none;
+   width: 20px;
+   float: left;
+   text-align: center;
+ }
+
+ .table-page li.prev a{
+   color: #07C;
+ }
+
+ .table-page li.after a{
+   color: #07C;
+}
+
+.table-page li.current a{
+   color: #808080;
+}
+
+
+/*Fancybox*/
+.fancybox-mask{
+   /* filter:alpha(opacity=50); 
+   -moz-opacity:0.5; 
+   opacity:0.5;  */
+   background-color: rgba(0,0,0,0.35); 
+   background: rgba(0, 0, 0, 0.5);
+   z-index: 99;
+   position: fixed;
+   width: 100%;
+   display: none;
+   cursor: pointer;
+}
+.fancybox-overlay{
+   position:absolute; display: none; width: 900px; left:100px; top:20px; background-color: white; z-index: 100; padding: 10px;
+   height: 600px;
+}
+.fancybox-out{
+   position: relative;
+   height: 580px;
+   overflow-y: auto;
+}
+.fancybox-close {
+   background: none;
+   border-radius: 50%;
+   width: 45px;
+   height: 45px;
+   background-color: #fff;
+   top: -16px;
+   right: -16px;
+   box-shadow: 0px 0px 11px rgba(0,0,0,0.4);
+   position: absolute;
+   cursor: pointer;
+   background-image: url(/static/images/close.png);
+   background-size: cover;
+   z-index: 101;
+}

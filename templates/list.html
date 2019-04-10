@@ -1,0 +1,84 @@
+{{template "header"}}
+
+<div id="divMask" class="fancybox-mask">
+</div>
+
+<div id="divItem" class="fancybox-overlay">
+    <div class="fancybox-out">
+        <div id="qid" style="overflow-y: auto;">
+        </div>
+    </div>
+    <a class="item-close fancybox-close"></a>
+</div>
+
+<div class="section page header_section">
+    
+    <div class="gradient gradient_red_blue gradient_header_section"></div>
+    <div class="section_container header_section_container flex_container flex_header_container">
+        <div class="text header_text">list</div>
+        <div class="text body_text flex_item flex_header_item">
+            <h2 class="header_quote">10 most voted Android-related questions</h2>
+            <div class="table100 ver1">
+                <table>
+                    <tbody>
+                        {{range .VotedItems}}
+                        <tr>
+                            <td class="center">
+                                <div class="min-vote">{{.UpVoteCount}}<br/></div>
+                                <div>votes</div>
+                            </td>
+                            <td><a href="#show-detail" class="show-detail" data-id="{{.QuestionId}}" data-link="{{.Link}}" >{{.Title}}</a>
+                                <div style="float:right;">{{.CreationDate.Format "2006-01-02 15:04:05"}}</div>
+                                <br>
+                            </td>
+                            <td>{{.UpVoteCount}}</td>
+                            <td>{{.DownVoteCount}}</td>
+                            <td></td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+                <div class="table-page">
+                    <ul>
+                        {{range .VPrevPages}}
+                        <li class="prev"><a href="list?vp={{.Index}}">{{.Index}}</a></li>
+                        {{end}}
+                        <li class="current">{{.VCurrentPage}}</li>
+                        {{range .VAftervPages}}
+                        <li class="after"><a href="list?vp={{.Index}}">{{.Index}}</a></li>
+                        {{end}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text body_text flex_item flex_header_item">
+            <h2 class="header_quote">10 newest Android-related questions</h2>
+            <div class="table100 ver1">
+                <table>
+                    <tbody>
+                        {{range .CreationItems}}
+                        <tr>
+                            <td class="center">
+                                <div class="min-vote">{{.UpVoteCount}}<br/></div>
+                                <div>votes</div>
+                            </td>
+                            <td><a href="#show-detail" class="show-detail" data-id="{{.QuestionId}}" data-link="{{.Link}}" >{{.Title}}</a>
+                                <div style="float:right;">{{.CreationDate.Format "2006-01-02 15:04:05"}}</div>
+                                <br>
+                            </td>
+                            <td>{{.CreationDate.Format "2006-01-02 15:04:05"}}</td>
+                            <td>{{.DownVoteCount}}</td>
+                            <td></td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/script.js"></script>
+
+{{template "footer"}}

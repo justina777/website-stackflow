@@ -21,6 +21,7 @@ func main() {
 	http.HandleFunc("/login", handler.LoginHandler)
 	http.HandleFunc("/sorry", handler.SorryHandler)
 	http.HandleFunc("/list", handler.ListHandler)
+	http.HandleFunc("/item", handler.ItemHandler)
 
 	//Start the web server, set the port to listen to 8080. Without a path it assumes localhost
 	//Print any errors from starting the webserver using fmt

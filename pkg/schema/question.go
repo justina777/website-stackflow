@@ -7,6 +7,7 @@ type Questions struct {
 	HasMore        bool       `json:"has_more"`
 	QuotaMax       int        `json:"quota_max"`
 	QuotaRemaining int        `json:"quota_remaining"`
+	Backoff        int        `json:"backoff,omitempty"`
 }
 
 type Question struct {
@@ -25,4 +26,8 @@ type Question struct {
 	Link             string `json:"link"`
 	Title            string `json:"title"`
 	Body             string `json:"body"`
+}
+
+type Page struct {
+	Index int
 }
