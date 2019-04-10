@@ -1,0 +1,25 @@
+{{template "header"}}
+
+<div class="title center">Welcome {{.Name}}, it is {{.Time}}</div>
+
+<div class="section page header_section">
+   <div class="gradient gradient_red_blue gradient_header_section"></div>
+   <div class="section_container header_section_container flex_container flex_header_container">
+      <div class="text header_text">
+         <h1>Surf Android Topics</h1>
+      </div>
+      <div class="text body_text flex_item flex_header_item">
+         <h2 class="header_quote">Enter the following information and surf the site!</h2>
+         <div>
+            <form action="/login" method="post">
+               Username:<input type="text" name="username">
+               Password:<input type="password" name="password">
+               <input type="submit" value="Login">
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+{{template "footer"}}
