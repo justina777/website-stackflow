@@ -1,5 +1,5 @@
 # website-stackflow
-The website for fetching questions regarding to Android from [Stack Overflow](https://stackoverflow.com/).
+The website is made by Go programming language to fetch Android-related questions from [Stack Overflow](https://stackoverflow.com/).
 
 
 ## Prerequisites
@@ -50,7 +50,7 @@ http://localhost:8080
 
 ## Limitation
 
-Please be noted that the api of stackoverflow has [rate limiting](https://api.stackexchange.com/docs/throttle). Do NOT exhaust the throttles of quota.
+Please be noted that the api of stackoverflow has [rate limiting](https://api.stackexchange.com/docs/throttle) and be careful that do NOT exhaust the quota of throttles. If it happens, please change the ip of network then you could browse again.
 
 ## Reference
 - Getting started with the [Go programming language](https://golang.org/doc/install).
