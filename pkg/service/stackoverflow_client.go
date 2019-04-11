@@ -18,11 +18,10 @@ const (
 	API_HOST          = "https://api.stackexchange.com/"
 	API_VERSION       = "2.2"
 	FUNCTION_QUESTION = "questions"
-	PAGE_SIZE         = 10
 	MAXPAGE           = 100
 )
 
-func (s *StackOverflowClient) Fetch(sort string, fromDate time.Time, page int) *schema.Questions {
+func (s *StackOverflowClient) Fetch(sort string, fromDate time.Time, page int, pageSize int) *schema.Questions {
 
 	url := fmt.Sprintf("%s%s/%s", API_HOST, API_VERSION, FUNCTION_QUESTION)
 	if page > MAXPAGE {
@@ -38,7 +37,7 @@ REDIRECT:
 			"page":     strconv.Itoa(page),
 			"site":     "stackoverflow",
 			"tagged":   "android",
-			"pagesize": strconv.Itoa(PAGE_SIZE),
+			"pagesize": strconv.Itoa(pageSize),
 			"fromdate": fromDate.Format("2006-01-02"),
 			"filter":   "!9Z(-wno.B",
 		}).

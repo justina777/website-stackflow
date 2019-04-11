@@ -4,17 +4,72 @@ import (
 	"html"
 	"html/template"
 	"net/http"
+	"sort"
 	"strconv"
 	"time"
 
 	"github.com/justina777/website-stackflow/pkg/schema"
 	"github.com/justina777/website-stackflow/pkg/service"
 	"github.com/justina777/website-stackflow/pkg/tool"
+	cache "github.com/patrickmn/go-cache"
 )
 
 const (
-	MAXPAGE = 10
+	MAXPAGE   = 10
+	PAGE_SIZE = 10
 )
+
+var (
+	c *cache.Cache
+)
+
+func init() {
+	c = cache.New(5*time.Minute, 10*time.Minute)
+}
+
+func findHotTags(sort string, key string) schema.PairList {
+
+	tList, found := c.Get(key)
+	if found {
+		return tList.(schema.PairList)
+	}
+
+	client := &service.StackOverflowClient{}
+	list := client.Fetch(sort, time.Now().AddDate(0, 0, -7), 1, 100)
+
+	mapTags := make(map[string]int)
+	for _, item := range list.Items {
+		for _, t := range item.Tags {
+			if v, ok := mapTags[t]; ok {
+				mapTags[t] = v + 1
+			} else {
+				mapTags[t] = 1
+			}
+		}
+	}
+
+	tList = sortMapByValue(mapTags)
+
+	c.Set(key, tList, cache.DefaultExpiration)
+	return tList.(schema.PairList)
+}
+
+func sortMapByValue(m map[string]int) schema.PairList {
+	p := make(schema.PairList, len(m))
+	i := 0
+	for k, v := range m {
+		if v > 1 {
+			p[i] = schema.Pair{k, v}
+			i++
+		}
+	}
+	sort.Sort(p)
+	if i > 11 {
+		return p[1:11]
+	} else {
+		return p[1:]
+	}
+}
 
 func ListHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -36,12 +91,15 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
 
 	obj := make(map[string]interface{})
 	if pageType == "" {
-		voteLists := client.Fetch("votes", time.Now().AddDate(0, 0, -7), pageNum)
+		hotTags := findHotTags("votes", "voteTags")
+		voteLists := client.Fetch("votes", time.Now().AddDate(0, 0, -7), pageNum, PAGE_SIZE)
 		obj["VotedItems"] = TransformData(voteLists.Items)
-
+		obj["HotTags"] = hotTags
 	} else {
-		creationLists := client.Fetch("creation", time.Now().AddDate(0, 0, -7), pageNum)
+		creationLists := client.Fetch("creation", time.Now().AddDate(0, 0, -7), pageNum, PAGE_SIZE)
+		hotTags := findHotTags("creation", "creationTags")
 		obj["CreationItems"] = TransformData(creationLists.Items)
+		obj["HotTags"] = hotTags
 	}
 
 	obj["Logged"] = tool.IsLogin(r.FormValue("l"))

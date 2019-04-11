@@ -4,8 +4,8 @@ MAINTAINER "Justina <chiahuei.lin@gmail.com>"
 
 RUN apk add --no-cache bash curl tar git 
 
-RUN go get gopkg.in/resty.v1 
-    # && 
+RUN go get gopkg.in/resty.v1 \
+    && go get github.com/patrickmn/go-cache
 RUN mkdir -p ${GOPATH}/src/github.com/justina777/website-stackflow
 ADD . ${GOPATH}/src/github.com/justina777/website-stackflow
 RUN cd ${GOPATH}/src/github.com/justina777/website-stackflow \

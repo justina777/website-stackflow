@@ -19,6 +19,12 @@
         <div class="text body_text flex_item flex_header_item" >
             <h2 class="header_quote" style="margin-top:50px;">100 most voted Android-related questions</h2>
             <div class="table100 ver1">
+                <div class="hot-tag-line">
+                    <div class="hot-tag-title">Hot tags :</div>
+                    {{range .HotTags}}
+                    <div class="hot-tag">{{.Key}}({{.Value}})</div>
+                    {{end}}
+                </div>
                 <table>
                     <tbody>
                         {{range .VotedItems}}

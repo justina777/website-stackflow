@@ -324,7 +324,6 @@ background: linear-gradient(65deg, #3D9970, #FFDC00); /* Standard syntax */
    background-color: #cccccc;
  }
 
-
  .table-page{
     float: right;
     padding-right: 15px;
@@ -353,6 +352,33 @@ background: linear-gradient(65deg, #3D9970, #FFDC00); /* Standard syntax */
    color: #808080;
 }
 
+.table100 .hot-tag-line{
+   padding: 10px;
+   border-bottom: 1px solid #f8f6ff;
+}
+
+.table100 .hot-tag-title{
+   color: #808080;
+   font-size: 14px;
+   line-height: 1.2;
+   padding: 3px;
+   display: inline-block;
+}
+
+.table100 .hot-tag{
+   color: #39739d;
+   background-color: #E1ECF4;
+   border-color: #E1ECF4;
+   padding: 3px;
+   font-size: 14px;
+   border-width: 1px;
+   border-style: solid;
+   border-radius: 3px;
+   line-height: 1.2;
+   margin-right: 2px;
+   margin-bottom: 5px;
+   display: inline-block;
+}
 
 /*Fancybox*/
 .fancybox-mask{
