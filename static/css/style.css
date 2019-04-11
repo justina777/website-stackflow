@@ -215,9 +215,9 @@ background: linear-gradient(65deg, #3D9970, #FFDC00); /* Standard syntax */
    font-size: 15px;
    color: #808080;
    line-height: 1.4;
-   padding-top: 18px;
-   padding-bottom: 18px;
-   padding-left: 10px;
+   padding: 10px;
+   border: 1px solid transparent;
+   border-radius: 3px;
  }
 
  .form-login td {
@@ -233,6 +233,10 @@ background: linear-gradient(65deg, #3D9970, #FFDC00); /* Standard syntax */
  .table100 td.center, .form-login td.center{
     text-align: center;
  }
+
+ .table100 td.answered{
+   color: #45A163;
+}
 
  .table100 td a {
    color: #07C;
@@ -273,6 +277,9 @@ background: linear-gradient(65deg, #3D9970, #FFDC00); /* Standard syntax */
    color: #6a737c;
  }
 
+ .table100 td.answered .min-vote a{
+   color: #45A163;
+ }
  .table100 td .min-text{
    font-size: 12px;
  }

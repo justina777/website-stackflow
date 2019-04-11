@@ -27,7 +27,7 @@
                                 <div class="min-vote"><a href="#show-detail" class="show-detail" data-id="{{.QuestionId}}" data-link="{{.Link}}" >{{.ViewCount}}</a></div>
                                 <div class="min-text">views</div>
                             </td>
-                            <td class="center">
+                            <td class="center {{if gt .AnswerCount 0}}answered{{end}}">
                                 <div class="min-vote"><a href="#show-detail" class="show-detail" data-id="{{.QuestionId}}" data-link="{{.Link}}" >{{.AnswerCount}}</a></div>
                                 <div class="min-text">answers</div>
                             </td>
