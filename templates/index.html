@@ -1,6 +1,4 @@
-{{template "header"}}
-
-<div class="title center">Welcome {{.Name}}, it is {{.Time}}</div>
+{{template "header" .}}
 
 <div class="section page header_section">
    <div class="gradient gradient_red_blue gradient_header_section"></div>
@@ -9,12 +7,25 @@
          <h1>Surf Android Topics</h1>
       </div>
       <div class="text body_text flex_item flex_header_item">
-         <h2 class="header_quote">Enter the following information and surf the site!</h2>
-         <div>
+         
+         <div class="form-login">
+            <h2 class="header_quote">Enter the following information and surf the site!</h2>
             <form action="/login" method="post">
-               Username:<input type="text" name="username">
-               Password:<input type="password" name="password">
-               <input type="submit" value="Login">
+               <table class="table-form-login">
+                  <tr>
+                     <td class="center">Username</td>
+                     <td class="center"><input type="text" name="username" class="input-text"></td>
+                  </tr>
+                  <tr>
+                     <td class="center">Password</td>
+                     <td class="center"><input type="password" name="password"></td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="center">
+                        <input type="submit" value="Login">
+                     </td>
+                  </tr>
+               </table>
             </form>
          </div>
       </div>

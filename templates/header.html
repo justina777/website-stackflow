@@ -4,10 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/style.css">
-    <title>{{.Name}}</title>
+    <title>Android topics in StackOverflow Webiste</title>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
 </head>
 <body>
-    <div class="header"></div>
+    <div id="change_class" class="flex_container section menu_section">
+        <div class="flex_item branding"><p></p></div>
+        {{if .Logged}}
+        <div class="flex_item menu_item100 menu_item_outside"><a href="/?l=y"><p style="width:70px;">Home</p></a></div>
+        <div class="flex_item menu_item100 menu_item_outside"><a href="/list?l=y"><p>Voted Topics</p></a></div>
+        <div class="flex_item menu_item100 menu_item_outside"><a href="/list?l=y&t=newest"><p>Newest Questions</p></a></div>
+        {{else}}
+        <div class="flex_item menu_item100 menu_item_outside"><a href="/"><p style="width:70px;">Home</p></a></div>
+        {{end}}
+    </div>
+
 {{end}}

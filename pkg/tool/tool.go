@@ -9,3 +9,11 @@ func Find(a []string, x string) int {
 	}
 	return -1
 }
+
+func IsLogin(v string) bool {
+	if v == "y" {
+		return true
+	} else {
+		return false
+	}
+}

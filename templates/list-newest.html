@@ -4,7 +4,7 @@
 </div>
 
 <div id="divItem" class="fancybox-overlay">
-    <div  id="divFancyboxout" class="fancybox-out">
+    <div id="divFancyboxout" class="fancybox-out">
         <div id="qid" style="overflow-y: auto;">
         </div>
         <div id="qloading" class="fancybox-loading-icon"><img src="/static/images/loading.gif"></div>
@@ -16,16 +16,16 @@
     
     <div class="gradient gradient_red_blue gradient_header_section"></div>
     <div class="section_container header_section_container flex_container flex_header_container">
-        <div class="text body_text flex_item flex_header_item" >
-            <h2 class="header_quote" style="margin-top:50px;">100 most voted Android-related questions</h2>
+        <div id="newest" class="text body_text flex_item flex_header_item" style="padding-bottom:50px;">
+            <h2 class="header_quote" style="margin-top:50px;">Top 10 Newest Android-related questions</h2>
             <div class="table100 ver1">
                 <table>
                     <tbody>
-                        {{range .VotedItems}}
+                        {{range .CreationItems}}
                         <tr>
                             <td class="center">
-                                <div class="min-vote"><a href="#show-detail" class="show-detail" data-id="{{.QuestionId}}" data-link="{{.Link}}" >{{.UpVoteCount}}</a></div>
-                                <div class="min-text">votes</div>
+                                <div class="min-vote"><a href="#show-detail" class="show-detail" data-id="{{.QuestionId}}" data-link="{{.Link}}" >{{.ViewCount}}</a></div>
+                                <div class="min-text">views</div>
                             </td>
                             <td class="center">
                                 <div class="min-vote"><a href="#show-detail" class="show-detail" data-id="{{.QuestionId}}" data-link="{{.Link}}" >{{.AnswerCount}}</a></div>
@@ -36,7 +36,7 @@
                                     {{range .Tags}}
                                     <div class="post-tag">{{.}}</div>
                                     {{end}}
-                                    <div class="post-time">post {{.PostedTimeAgo}} {{.UnitPeroid}} ago <span class="post-owner">{{.Owner.DisplayName}}</span></div>
+                                    <div class="post-time">post {{.PostedTimeAgo}} {{.UnitPeroid}} ago <span class="post-owner">{{.Owner.DisplayName}}</span> <b>{{.Owner.Reputation}}</b></div>
                                 </div>
                             </td>
                         </tr>
@@ -46,11 +46,11 @@
                 <div class="table-page">
                     <ul>
                         {{range .PrevPages}}
-                        <li class="prev"><a href="list?l=y&vp={{.Index}}">{{.Index}}</a></li>
+                        <li class="prev"><a href="list?l=y&t=newest&vp={{.Index}}">{{.Index}}</a></li>
                         {{end}}
                         <li class="current">{{.CurrentPage}}</li>
                         {{range .AftervPages}}
-                        <li class="after"><a href="list?l=y&vp={{.Index}}">{{.Index}}</a></li>
+                        <li class="after"><a href="list?l=y&t=newest&vp={{.Index}}">{{.Index}}</a></li>
                         {{end}}
                     </ul>
                 </div>

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"html"
 	"html/template"
 	"net/http"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/justina777/website-stackflow/pkg/schema"
 	"github.com/justina777/website-stackflow/pkg/service"
+	"github.com/justina777/website-stackflow/pkg/tool"
 )
 
 const (
@@ -18,48 +18,54 @@ const (
 
 func ListHandler(w http.ResponseWriter, r *http.Request) {
 
-	t := template.Must(template.ParseFiles("templates/list.html", "templates/header.html", "templates/footer.html"))
+	t := template.Must(template.ParseFiles("templates/list.html", "templates/list-newest.html", "templates/header.html", "templates/footer.html"))
 
-	vPage := 1 //the page of voteLists
-	cPage := 1 //the page of creationLists
+	pageType := ""
+	pageNum := 1 //the page of voteLists
 	if name := r.FormValue("vp"); name != "" {
 		t, err := strconv.Atoi(name)
 		if err == nil {
-			vPage = t
+			pageNum = t
 		}
 	}
-	if name := r.FormValue("cp"); name != "" {
-		t, err := strconv.Atoi(name)
-		if err == nil {
-			vPage = t
-		}
+	if name := r.FormValue("t"); name != "" {
+		pageType = name
 	}
 
 	client := &service.StackOverflowClient{}
-	voteLists := client.Fetch("votes", time.Now().AddDate(0, 0, -7), vPage)
-	creationLists := client.Fetch("creation", time.Now().AddDate(0, 0, -7), cPage)
 
 	obj := make(map[string]interface{})
-	obj["VotedItems"] = TransformData(voteLists.Items)
-	obj["CreationItems"] = TransformData(creationLists.Items)
-	obj["VCurrentPage"] = vPage
-	fmt.Println("page ", vPage, ", cpage ", cPage)
+	if pageType == "" {
+		voteLists := client.Fetch("votes", time.Now().AddDate(0, 0, -7), pageNum)
+		obj["VotedItems"] = TransformData(voteLists.Items)
 
-	if vPage < 3 {
-		obj["VPrevPages"] = genPageNums(vPage, true, vPage-1)
-		obj["VAftervPages"] = genPageNums(vPage, false, 2+3-vPage)
-	} else if vPage+2 >= MAXPAGE {
-		obj["VPrevPages"] = genPageNums(vPage, true, 2+2-MAXPAGE+vPage)
-		obj["VAftervPages"] = genPageNums(vPage, false, MAXPAGE-vPage)
 	} else {
-		obj["VPrevPages"] = genPageNums(vPage, true, 2)
-		obj["VAftervPages"] = genPageNums(vPage, false, 2)
+		creationLists := client.Fetch("creation", time.Now().AddDate(0, 0, -7), pageNum)
+		obj["CreationItems"] = TransformData(creationLists.Items)
 	}
-	fmt.Println(obj["VPrevPages"])
-	fmt.Println(obj["VAftervPages"])
 
-	if err := t.ExecuteTemplate(w, "list.html", obj); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	obj["Logged"] = tool.IsLogin(r.FormValue("l"))
+	obj["CurrentPage"] = pageNum
+	if pageNum < 3 {
+		obj["PrevPages"] = genPageNums(pageNum, true, pageNum-1)
+		obj["AftervPages"] = genPageNums(pageNum, false, 2+3-pageNum)
+	} else if pageNum+2 >= MAXPAGE {
+		obj["PrevPages"] = genPageNums(pageNum, true, 2+2-MAXPAGE+pageNum)
+		obj["AftervPages"] = genPageNums(pageNum, false, MAXPAGE-pageNum)
+	} else {
+		obj["PrevPages"] = genPageNums(pageNum, true, 2)
+		obj["AftervPages"] = genPageNums(pageNum, false, 2)
+	}
+	// fmt.Println("page ", vPage, ", cpage ", cPage)
+
+	if pageType == "" {
+		if err := t.ExecuteTemplate(w, "list.html", obj); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		if err := t.ExecuteTemplate(w, "list-newest.html", obj); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	}
 }
 
@@ -83,7 +89,7 @@ func genPageNums(curPage int, isPrev bool, genNum int) []schema.Page {
 		}
 	}
 
-	fmt.Println(p)
+	// fmt.Println(p)
 	return p
 }
 
@@ -109,7 +115,21 @@ func TransformData(list []schema.Question) []schema.Question {
 	for i, item := range list {
 		list[i].CreationDate = time.Unix(item.IntCreationDate, 0)
 		list[i].Title = html.UnescapeString(item.Title)
-		list[i].Body = html.UnescapeString(item.Body)
+		list[i].Owner.DisplayName = html.UnescapeString(item.Owner.DisplayName)
+		timeDiff := time.Now().UTC().Sub(list[i].CreationDate)
+		if timeDiff.Hours() >= 24 {
+			list[i].PostedTimeAgo = int(timeDiff.Hours()) / 24
+			list[i].UnitPeroid = "days"
+		} else if timeDiff.Hours() > 1 {
+			list[i].PostedTimeAgo = int(timeDiff.Hours())
+			list[i].UnitPeroid = "hours"
+		} else if timeDiff.Minutes() > 1 {
+			list[i].PostedTimeAgo = int(timeDiff.Minutes())
+			list[i].UnitPeroid = "mins"
+		} else {
+			list[i].PostedTimeAgo = int(timeDiff.Seconds())
+			list[i].UnitPeroid = "secs"
+		}
 	}
 	return list
 }
